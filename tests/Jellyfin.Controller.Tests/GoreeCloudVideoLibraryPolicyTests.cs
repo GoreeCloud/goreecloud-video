@@ -7,6 +7,20 @@ namespace Jellyfin.Controller.Tests
 {
     public class GoreeCloudVideoLibraryPolicyTests
     {
+        [Fact]
+        public void SupportedCollectionTypes_ContainsOnlyVideoLibraryTypes()
+        {
+            Assert.Equal(
+                new[]
+                {
+                    CollectionTypeOptions.movies,
+                    CollectionTypeOptions.tvshows,
+                    CollectionTypeOptions.homevideos,
+                    CollectionTypeOptions.mixed
+                },
+                GoreeCloudVideoLibraryPolicy.SupportedCollectionTypes);
+        }
+
         [Theory]
         [InlineData(CollectionTypeOptions.movies)]
         [InlineData(CollectionTypeOptions.tvshows)]
