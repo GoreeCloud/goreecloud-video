@@ -1,0 +1,101 @@
+name: Bug report
+description: Report a reproducible GoreeCloud Video problem
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a GoreeCloud Video problem. The project is in active development and remains substantially Jellyfin-derived during the current fork-to-native transition.
+
+        **Privacy:** redact passwords, tokens, private keys, public IP addresses, private media paths, household viewing history, and other sensitive information before attaching logs or screenshots.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: This report describes one reproducible problem.
+          required: true
+        - label: I removed secrets and private household/media information from logs and screenshots.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Explain what is wrong and why it matters.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Provide a complete, minimal sequence that reproduces the problem.
+      placeholder: |
+        1. Start GoreeCloud Video...
+        2. Open...
+        3. Select...
+        4. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: GoreeCloud Video version or commit
+      description: Provide the release, branch, tag, or commit SHA you tested.
+      placeholder: main @ abc1234
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include only details relevant to reproduction.
+      value: |
+        - OS:
+        - Deployment: bare metal / Docker / VM / other
+        - Client:
+        - Browser (if applicable):
+        - FFmpeg version (if relevant):
+        - Playback method: Direct Play / remux / transcode / unknown
+        - Hardware acceleration:
+        - GPU:
+        - Reverse proxy:
+        - Media storage type:
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste the smallest useful log section after redacting sensitive information. For transcoding failures, include relevant FFmpeg output when available.
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots, videos, regression information, or upstream Jellyfin references when useful.
