@@ -26,6 +26,25 @@ public sealed class LibraryStructureControllerTests : IClassFixture<JellyfinAppl
     }
 
     [Fact]
+    [Priority(-3)]
+    public async Task Post_UnsupportedVirtualFolder_BadRequest()
+    {
+        var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.AddAuthHeader(_accessToken ??= await AuthHelper.CompleteStartupAsync(client));
+
+        var body = new AddVirtualFolderDto()
+        {
+            LibraryOptions = new LibraryOptions()
+            {
+                Enabled = false
+            }
+        };
+
+        using var response = await client.PostAsJsonAsync("Library/VirtualFolders?name=unsupported&collectionType=music", body, _jsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
     [Priority(-1)]
     public async Task Post_NewVirtualFolder_NotFound()
     {
@@ -40,7 +59,7 @@ public sealed class LibraryStructureControllerTests : IClassFixture<JellyfinAppl
             }
         };
 
-        using var response = await client.PostAsJsonAsync("Library/VirtualFolders?name=test&refreshLibrary=true", body, _jsonOptions);
+        using var response = await client.PostAsJsonAsync("Library/VirtualFolders?name=test&collectionType=movies&refreshLibrary=true", body, _jsonOptions);
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
@@ -76,7 +95,7 @@ public sealed class LibraryStructureControllerTests : IClassFixture<JellyfinAppl
             }
         };
 
-        using var createResponse = await client.PostAsJsonAsync("Library/VirtualFolders?name=test&refreshLibrary=true", createBody, _jsonOptions);
+        using var createResponse = await client.PostAsJsonAsync("Library/VirtualFolders?name=test&collectionType=movies&refreshLibrary=true", createBody, _jsonOptions);
         Assert.Equal(HttpStatusCode.NoContent, createResponse.StatusCode);
 
         await Task.Delay(2000).ConfigureAwait(true);
