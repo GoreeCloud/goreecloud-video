@@ -1,13 +1,35 @@
 ---
-name: Feature Request
-about: Request a new feature
-title: ''
-labels: feature-request
+name: Feature request
+about: Propose a GoreeCloud Video capability or improvement
+title: "[Feature] "
+labels: enhancement
 assignees: ''
 ---
 
-**PLEASE DO NOT OPEN FEATURE REQUEST ISSUES ON GITHUB**
+## Summary
 
-**Feature requests should be opened on our dedicated [feature request](https://features.jellyfin.org/) hub so they can be appropriately discussed and prioritized.**
+Describe the capability or improvement you are proposing.
 
-However, if you are willing to contribute to the project by adding a new feature yourself, then please ensure that you first review our [documentation](https://docs.jellyfin.org/general/contributing/development.html) on contributing code. Once you have reviewed the documentation, feel free to come back here and open an issue here outlining your proposed approach so that it can be documented, tracked, and discussed by other team members.
+## User need
+
+What problem does this solve for GoreeCloud Video users or administrators?
+
+## Proposed behavior
+
+Describe the desired behavior, including relevant web, mobile, television, server, or administrator interactions.
+
+## Product boundary
+
+Confirm that this proposal is video-focused and does not introduce a general music, audiobook, ebook, podcast, or photo-backup product surface.
+
+## Privacy and security
+
+Describe any impact on user data, viewing history, authentication, authorization, devices, network access, downloads, or media-library permissions.
+
+## Upstream relationship
+
+If this capability exists in Jellyfin or another project, identify it as a behavioral or implementation reference. Do not paste third-party source without preserving its license and provenance.
+
+## Additional context
+
+Add mockups, examples, compatibility requirements, or other useful context. Do not include secrets, private viewing history, personal media contents, or sensitive production information.
