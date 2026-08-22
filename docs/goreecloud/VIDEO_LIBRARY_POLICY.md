@@ -46,6 +46,23 @@ The initial Milestone 1 enforcement point is the administrative virtual-library 
 
 Keeping the policy outside the inherited collection enum preserves protocol and upstream compatibility while giving GoreeCloud Video an explicit, independently testable product rule.
 
+## First-party capability contract
+
+First-party GoreeCloud clients must not infer supported library types from the complete inherited Jellyfin enum. The server exposes GoreeCloud Video's narrower contract at:
+
+`GET /GoreeCloud/Video/Libraries/SupportedTypes`
+
+The endpoint is protected by the same elevated/first-time-setup authorization policy used for library administration and returns the types represented by `GoreeCloudVideoLibraryPolicy.SupportedCollectionTypes`.
+
+The initial response contract contains only:
+
+- `movies`
+- `tvshows`
+- `homevideos`
+- `mixed`
+
+This gives the future first-party Glaze UI administration experience a GoreeCloud-owned capability source instead of coupling it to every collection type inherited from Jellyfin. New first-class library types must be added to the policy and its tests before a client exposes them.
+
 ## Known transition gaps
 
 This policy is the first server-side boundary, not the completion of Milestone 1.
@@ -59,6 +76,7 @@ Inherited music, book, photo, and related implementation code may remain in the 
 Before this milestone can be marked complete, validation must cover at minimum:
 
 - allowed and blocked library-creation types
+- the first-party supported-library-types capability endpoint
 - movie and TV library scanning
 - Home Videos scanning without exposing a general photo-library product
 - Direct Play
