@@ -6,6 +6,7 @@ Start with:
 
 - [`UPSTREAM.md`](UPSTREAM.md) — upstream provenance and synchronization rules
 - [`PRODUCT_BOUNDARY.md`](PRODUCT_BOUNDARY.md) — what GoreeCloud Video is and is not
+- [`VIDEO_LIBRARY_POLICY.md`](VIDEO_LIBRARY_POLICY.md) — allowed inherited library types and the Milestone 1 video-only enforcement boundary
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — transition architecture and ownership boundaries
 - [`CI.md`](CI.md) — retained, adapted, and removed repository automation
 - [`DEVELOPMENT.md`](DEVELOPMENT.md) — development phases and validation expectations
