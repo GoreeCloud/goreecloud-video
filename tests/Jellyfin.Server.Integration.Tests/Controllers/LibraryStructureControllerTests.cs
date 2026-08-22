@@ -27,6 +27,28 @@ public sealed class LibraryStructureControllerTests : IClassFixture<JellyfinAppl
 
     [Fact]
     [Priority(-3)]
+    public async Task Get_GoreeCloudSupportedVirtualFolderTypes_Success()
+    {
+        var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.AddAuthHeader(_accessToken ??= await AuthHelper.CompleteStartupAsync(client));
+
+        using var response = await client.GetAsync("GoreeCloud/Video/Libraries/SupportedTypes");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var collectionTypes = await response.Content.ReadFromJsonAsync<CollectionTypeOptions[]>(_jsonOptions);
+        Assert.Equal(
+            new[]
+            {
+                CollectionTypeOptions.movies,
+                CollectionTypeOptions.tvshows,
+                CollectionTypeOptions.homevideos,
+                CollectionTypeOptions.mixed
+            },
+            collectionTypes);
+    }
+
+    [Fact]
+    [Priority(-3)]
     public async Task Post_UnsupportedVirtualFolder_BadRequest()
     {
         var client = _factory.CreateClient();
