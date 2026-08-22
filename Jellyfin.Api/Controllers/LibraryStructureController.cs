@@ -81,6 +81,8 @@ public class LibraryStructureController : BaseJellyfinApiController
         [FromBody] AddVirtualFolderDto? libraryOptionsDto,
         [FromQuery] bool refreshLibrary = false)
     {
+        GoreeCloudVideoLibraryPolicy.EnsureSupported(collectionType);
+
         var libraryOptions = libraryOptionsDto?.LibraryOptions ?? new LibraryOptions();
 
         if (paths is not null && paths.Length > 0)
