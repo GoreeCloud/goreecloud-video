@@ -8,6 +8,7 @@ const (
 	ModeDirectPlay Mode = "direct-play"
 	ModeRemux      Mode = "remux"
 	ModeTranscode  Mode = "transcode"
+	ModeDenied     Mode = "denied"
 )
 
 type MediaProfile struct {
@@ -49,7 +50,7 @@ func Decide(media MediaProfile, client ClientCapabilities) Decision {
 	if client.AllowTranscoding {
 		return Decision{Mode: ModeTranscode, Reason: "source exceeds direct-play or remux capabilities"}
 	}
-	return Decision{Mode: ModeDirectPlay, Reason: "no supported transformation is authorized"}
+	return Decision{Mode: ModeDenied, Reason: "client cannot play the source and transcoding is disabled"}
 }
 
 func normalize(value string) string { return strings.ToLower(strings.TrimSpace(value)) }
