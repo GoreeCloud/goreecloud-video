@@ -55,5 +55,5 @@ func Decide(media MediaProfile, client ClientCapabilities) Decision {
 
 func normalize(value string) string { return strings.ToLower(strings.TrimSpace(value)) }
 
-func withinLimit(value, limit int) bool { return limit <= 0 || value <= limit }
+func withinLimit(value, limit int) bool     { return limit <= 0 || value <= limit }
 func withinBitrate(value, limit int64) bool { return limit <= 0 || value <= limit }
