@@ -36,6 +36,13 @@ type Decision struct {
 }
 
 func Decide(media MediaProfile, client ClientCapabilities) Decision {
+	if !validMediaProfile(media) {
+		return Decision{Mode: ModeDenied, Reason: "invalid source media profile"}
+	}
+	if !validClientCapabilities(client) {
+		return Decision{Mode: ModeDenied, Reason: "invalid client capability limits"}
+	}
+
 	containerOK := client.Containers[normalize(media.Container)]
 	videoOK := client.VideoCodecs[normalize(media.VideoCodec)]
 	audioOK := media.AudioCodec == "" || client.AudioCodecs[normalize(media.AudioCodec)]
@@ -53,7 +60,19 @@ func Decide(media MediaProfile, client ClientCapabilities) Decision {
 	return Decision{Mode: ModeDenied, Reason: "client cannot play the source and transcoding is disabled"}
 }
 
+func validMediaProfile(media MediaProfile) bool {
+	return normalize(media.Container) != "" &&
+		normalize(media.VideoCodec) != "" &&
+		media.Width >= 0 &&
+		media.Height >= 0 &&
+		media.Bitrate >= 0
+}
+
+func validClientCapabilities(client ClientCapabilities) bool {
+	return client.MaxWidth >= 0 && client.MaxHeight >= 0 && client.MaxBitrate >= 0
+}
+
 func normalize(value string) string { return strings.ToLower(strings.TrimSpace(value)) }
 
-func withinLimit(value, limit int) bool     { return limit <= 0 || value <= limit }
-func withinBitrate(value, limit int64) bool { return limit <= 0 || value <= limit }
+func withinLimit(value, limit int) bool     { return limit == 0 || value <= limit }
+func withinBitrate(value, limit int64) bool { return limit == 0 || value <= limit }
