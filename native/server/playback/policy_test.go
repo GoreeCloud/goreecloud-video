@@ -37,3 +37,36 @@ func TestDecideDeniedWhenTransformationDisabled(t *testing.T) {
 		t.Fatalf("mode = %q, want %q", decision.Mode, ModeDenied)
 	}
 }
+
+func TestDecideRejectsInvalidSourceProfile(t *testing.T) {
+	tests := []MediaProfile{
+		{VideoCodec: "h264"},
+		{Container: "mkv"},
+		{Container: "mkv", VideoCodec: "h264", Width: -1},
+		{Container: "mkv", VideoCodec: "h264", Height: -1},
+		{Container: "mkv", VideoCodec: "h264", Bitrate: -1},
+	}
+
+	for _, media := range tests {
+		decision := Decide(media, ClientCapabilities{AllowTranscoding: true})
+		if decision.Mode != ModeDenied {
+			t.Fatalf("media %+v mode = %q, want %q", media, decision.Mode, ModeDenied)
+		}
+	}
+}
+
+func TestDecideRejectsInvalidClientLimits(t *testing.T) {
+	tests := []ClientCapabilities{
+		{MaxWidth: -1, AllowTranscoding: true},
+		{MaxHeight: -1, AllowTranscoding: true},
+		{MaxBitrate: -1, AllowTranscoding: true},
+	}
+	media := MediaProfile{Container: "mkv", VideoCodec: "h264"}
+
+	for _, client := range tests {
+		decision := Decide(media, client)
+		if decision.Mode != ModeDenied {
+			t.Fatalf("client %+v mode = %q, want %q", client, decision.Mode, ModeDenied)
+		}
+	}
+}
