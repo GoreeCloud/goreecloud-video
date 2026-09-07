@@ -114,6 +114,5 @@ func validTransformJobLease(lease TransformJobLease) bool {
 		!lease.expiresAt.IsZero() &&
 		lease.acquiredAt.Equal(lease.acquiredAt.UTC()) &&
 		lease.expiresAt.Equal(lease.expiresAt.UTC()) &&
-		lease.expiresAt.After(lease.acquiredAt) &&
-		lease.expiresAt.Sub(lease.acquiredAt) <= MaxTransformLeaseDuration
+		lease.expiresAt.After(lease.acquiredAt)
 }
