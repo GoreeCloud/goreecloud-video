@@ -26,8 +26,8 @@ type TransformJobLease struct {
 	expiresAt  time.Time
 }
 
-func (l TransformJobLease) JobID() string      { return l.jobID }
-func (l TransformJobLease) WorkerID() string   { return l.workerID }
+func (l TransformJobLease) JobID() string         { return l.jobID }
+func (l TransformJobLease) WorkerID() string      { return l.workerID }
 func (l TransformJobLease) AcquiredAt() time.Time { return l.acquiredAt }
 func (l TransformJobLease) ExpiresAt() time.Time  { return l.expiresAt }
 
