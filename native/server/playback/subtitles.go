@@ -12,10 +12,10 @@ const (
 type SubtitleReasonCode string
 
 const (
-	SubtitleReasonInvalidTrack       SubtitleReasonCode = "invalid-track"
-	SubtitleReasonCodecSupported     SubtitleReasonCode = "codec-supported"
-	SubtitleReasonBurnInRequired     SubtitleReasonCode = "burn-in-required"
-	SubtitleReasonBurnInUnavailable  SubtitleReasonCode = "burn-in-unavailable"
+	SubtitleReasonInvalidTrack      SubtitleReasonCode = "invalid-track"
+	SubtitleReasonCodecSupported    SubtitleReasonCode = "codec-supported"
+	SubtitleReasonBurnInRequired    SubtitleReasonCode = "burn-in-required"
+	SubtitleReasonBurnInUnavailable SubtitleReasonCode = "burn-in-unavailable"
 )
 
 type SubtitleTrack struct {
