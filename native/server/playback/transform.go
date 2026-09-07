@@ -5,7 +5,7 @@ import "errors"
 type TransformRequirement string
 
 const (
-	TransformMediaTranscode  TransformRequirement = "media-transcode"
+	TransformMediaTranscode TransformRequirement = "media-transcode"
 	TransformSubtitleBurnIn TransformRequirement = "subtitle-burn-in"
 	TransformHDRToneMap     TransformRequirement = "hdr-tone-map"
 )
