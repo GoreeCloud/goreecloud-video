@@ -53,6 +53,10 @@ func TestSelectTransformWorkerRejectsInvalidAndDuplicateIDs(t *testing.T) {
 			{ID: "worker", Capabilities: WorkerCapabilities{MediaTranscode: true}, Available: false},
 			{ID: "worker", Capabilities: WorkerCapabilities{MediaTranscode: true}, Available: true},
 		},
+		{
+			{ID: "worker", Capabilities: WorkerCapabilities{MediaTranscode: true}, Available: true},
+			{ID: "worker", Capabilities: WorkerCapabilities{MediaTranscode: true}, Available: false},
+		},
 	}
 	for i, candidates := range cases {
 		if _, _, err := SelectTransformWorker(request, candidates); !errors.Is(err, ErrInvalidTransformWorker) {
