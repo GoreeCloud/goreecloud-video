@@ -45,7 +45,11 @@ func CompleteStoredTransformJob(
 		return TransformJobRecord{}, ErrExpiredTransformJobLease
 	}
 
-	failureCode = strings.TrimSpace(failureCode)
+	canonicalFailureCode := strings.TrimSpace(failureCode)
+	if canonicalFailureCode != failureCode {
+		return TransformJobRecord{}, ErrInvalidTransformJobCompletion
+	}
+	failureCode = canonicalFailureCode
 	if outcome == TransformJobOutcomeFailed {
 		if failureCode == "" {
 			return TransformJobRecord{}, ErrInvalidTransformJobCompletion
