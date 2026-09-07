@@ -17,8 +17,10 @@ type TransformWorkerCandidate struct {
 
 // SelectTransformWorker chooses the first available worker that can satisfy an
 // already-built transform request. Candidate order is therefore the caller's
-// explicit scheduling preference. This function does not reserve capacity,
-// launch jobs, inspect processes, or execute media transformations.
+// explicit scheduling preference. The complete candidate set is validated
+// before selection so malformed or duplicate worker identities cannot be
+// hidden behind an earlier matching candidate. This function does not reserve
+// capacity, launch jobs, inspect processes, or execute media transformations.
 func SelectTransformWorker(
 	request TransformRequest,
 	candidates []TransformWorkerCandidate,
@@ -31,7 +33,6 @@ func SelectTransformWorker(
 	}
 
 	seen := make(map[string]struct{}, len(candidates))
-	plan := TransformPlan{Requirements: append([]TransformRequirement(nil), request.requirements...)}
 	for _, candidate := range candidates {
 		if candidate.ID == "" || len(candidate.ID) > MaxTransformWorkerIDLength || strings.TrimSpace(candidate.ID) != candidate.ID {
 			return TransformWorkerCandidate{}, false, ErrInvalidTransformWorker
@@ -40,7 +41,10 @@ func SelectTransformWorker(
 			return TransformWorkerCandidate{}, false, ErrInvalidTransformWorker
 		}
 		seen[candidate.ID] = struct{}{}
+	}
 
+	plan := TransformPlan{Requirements: append([]TransformRequirement(nil), request.requirements...)}
+	for _, candidate := range candidates {
 		decision, err := EvaluateTransformWorker(plan, candidate.Capabilities)
 		if err != nil {
 			return TransformWorkerCandidate{}, false, err
