@@ -16,24 +16,27 @@ var (
 	ErrUnsupportedTransformJobWorker = errors.New("worker cannot satisfy transform job requirements")
 )
 
-// TransformJobLease is a scheduler-neutral claim tying one queued transform job
-// to one capability-compatible worker for a bounded time window. It does not
-// dispatch processes, reserve hardware, persist itself, or execute media work.
+// TransformJobLease is a scheduler-neutral claim tying one exact transform-job
+// attempt to one capability-compatible worker for a bounded time window. It
+// does not dispatch processes, reserve hardware, persist itself, or execute
+// media work.
 type TransformJobLease struct {
 	jobID      string
 	workerID   string
+	attempt    int
 	acquiredAt time.Time
 	expiresAt  time.Time
 }
 
 func (l TransformJobLease) JobID() string         { return l.jobID }
 func (l TransformJobLease) WorkerID() string      { return l.workerID }
+func (l TransformJobLease) Attempt() int          { return l.attempt }
 func (l TransformJobLease) AcquiredAt() time.Time { return l.acquiredAt }
 func (l TransformJobLease) ExpiresAt() time.Time  { return l.expiresAt }
 
 // ClaimTransformJob validates worker capability against the job's immutable
 // transform requirements, transitions the job from queued to running exactly
-// once, and returns a bounded lease describing that claim.
+// once, and returns a bounded lease describing that exact attempt.
 func ClaimTransformJob(
 	job TransformJob,
 	workerID string,
@@ -64,6 +67,7 @@ func ClaimTransformJob(
 	return running, TransformJobLease{
 		jobID:      running.ID(),
 		workerID:   workerID,
+		attempt:    running.Attempts(),
 		acquiredAt: now,
 		expiresAt:  now.Add(ttl),
 	}, nil
@@ -80,9 +84,9 @@ func (l TransformJobLease) Expired(now time.Time) (bool, error) {
 	return !now.Before(l.expiresAt), nil
 }
 
-// Renew extends a still-active lease from the supplied current time. The job
-// and worker identities are immutable; an expired lease must be reacquired by
-// a higher-level scheduler rather than silently revived here.
+// Renew extends a still-active lease from the supplied current time. The job,
+// worker, and attempt identities are immutable; an expired lease must be
+// reacquired by a higher-level scheduler rather than silently revived here.
 func (l TransformJobLease) Renew(now time.Time, ttl time.Duration) (TransformJobLease, error) {
 	if !validTransformJobLease(l) || !validTransformLeaseWindow(now, ttl) {
 		return TransformJobLease{}, ErrInvalidTransformJobLease
@@ -96,7 +100,11 @@ func (l TransformJobLease) Renew(now time.Time, ttl time.Duration) (TransformJob
 }
 
 func (l TransformJobLease) Matches(job TransformJob, workerID string) bool {
-	return validTransformJobLease(l) && validTransformJob(job) && l.jobID == job.ID() && l.workerID == workerID
+	return validTransformJobLease(l) &&
+		validTransformJob(job) &&
+		l.jobID == job.ID() &&
+		l.workerID == workerID &&
+		l.attempt == job.Attempts()
 }
 
 func validTransformWorkerID(id string) bool {
@@ -110,6 +118,7 @@ func validTransformLeaseWindow(now time.Time, ttl time.Duration) bool {
 func validTransformJobLease(lease TransformJobLease) bool {
 	return validTransformJobID(lease.jobID) &&
 		validTransformWorkerID(lease.workerID) &&
+		lease.attempt > 0 &&
 		!lease.acquiredAt.IsZero() &&
 		!lease.expiresAt.IsZero() &&
 		lease.acquiredAt.Equal(lease.acquiredAt.UTC()) &&
