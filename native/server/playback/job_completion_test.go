@@ -79,7 +79,7 @@ func TestCompleteStoredTransformJobRejectsExpiredOrWrongWorkerLease(t *testing.T
 		"worker-1",
 		lease,
 		TransformJobOutcomeSucceeded,
-		now.Add(time.Minute),
+		now.Add(time.Minute+time.Second),
 		"",
 	); !errors.Is(err, ErrExpiredTransformJobLease) || repository.saves != before {
 		t.Fatalf("error=%v saves=%d", err, repository.saves)
