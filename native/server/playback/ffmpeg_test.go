@@ -117,7 +117,7 @@ func TestFFmpegExecutorDelegatesExactlyOnceAndPropagatesRunnerFailure(t *testing
 		t.Fatal(err)
 	}
 	request := FFmpegExecutionRequest{
-		Transform: TransformRequest{sourceID: "source-1", requirements: []TransformRequirement{TransformMediaTranscode}},
+		Transform:  TransformRequest{sourceID: "source-1", requirements: []TransformRequirement{TransformMediaTranscode}},
 		InputPath:  "/srv/video/input.mkv",
 		OutputPath: "/srv/video/output.mp4",
 	}
@@ -141,7 +141,7 @@ func TestFFmpegExecutorRejectsCanceledContextAndInvalidExecutable(t *testing.T) 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	request := FFmpegExecutionRequest{
-		Transform: TransformRequest{sourceID: "source-1", requirements: []TransformRequirement{TransformMediaTranscode}},
+		Transform:  TransformRequest{sourceID: "source-1", requirements: []TransformRequirement{TransformMediaTranscode}},
 		InputPath:  "/srv/video/input.mkv",
 		OutputPath: "/srv/video/output.mp4",
 	}
