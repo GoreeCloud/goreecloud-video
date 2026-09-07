@@ -37,6 +37,9 @@ func CompleteStoredTransformJob(
 	if repository == nil || !validTransformJobID(id) || !validTransformWorkerID(workerID) || !validTransformJobLease(lease) || now.IsZero() {
 		return TransformJobRecord{}, ErrInvalidTransformJobCompletion
 	}
+	if lease.JobID() != id || lease.WorkerID() != workerID {
+		return TransformJobRecord{}, ErrInvalidTransformJobCompletion
+	}
 	expired, err := lease.Expired(now)
 	if err != nil {
 		return TransformJobRecord{}, ErrInvalidTransformJobCompletion
