@@ -12,10 +12,10 @@ const (
 type HDRReasonCode string
 
 const (
-	HDRReasonInvalidProfile          HDRReasonCode = "invalid-profile"
-	HDRReasonFormatSupported         HDRReasonCode = "format-supported"
-	HDRReasonToneMappingRequired     HDRReasonCode = "tone-mapping-required"
-	HDRReasonToneMappingUnavailable  HDRReasonCode = "tone-mapping-unavailable"
+	HDRReasonInvalidProfile         HDRReasonCode = "invalid-profile"
+	HDRReasonFormatSupported        HDRReasonCode = "format-supported"
+	HDRReasonToneMappingRequired    HDRReasonCode = "tone-mapping-required"
+	HDRReasonToneMappingUnavailable HDRReasonCode = "tone-mapping-unavailable"
 )
 
 type HDRProfile struct {
