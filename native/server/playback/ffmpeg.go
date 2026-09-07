@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	ErrInvalidFFmpegExecutor       = errors.New("invalid ffmpeg executor")
-	ErrInvalidFFmpegExecution      = errors.New("invalid ffmpeg execution request")
-	ErrUnsafeSubtitleFilterPath    = errors.New("unsafe subtitle filter path")
-	ErrFFmpegExecutionFailed       = errors.New("ffmpeg execution failed")
+	ErrInvalidFFmpegExecutor    = errors.New("invalid ffmpeg executor")
+	ErrInvalidFFmpegExecution   = errors.New("invalid ffmpeg execution request")
+	ErrUnsafeSubtitleFilterPath = errors.New("unsafe subtitle filter path")
+	ErrFFmpegExecutionFailed    = errors.New("ffmpeg execution failed")
 )
 
 const hdrToSDRFilter = "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p"
