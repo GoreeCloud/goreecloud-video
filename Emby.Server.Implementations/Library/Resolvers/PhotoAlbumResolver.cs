@@ -46,8 +46,7 @@ namespace Emby.Server.Implementations.Library.Resolvers
                 // Must be an image file within a photo collection
                 var collectionType = args.GetCollectionType();
 
-                if (collectionType == CollectionType.photos
-                    || (collectionType == CollectionType.homevideos && args.LibraryOptions.EnablePhotos))
+                if (collectionType == CollectionType.photos)
                 {
                     if (HasPhotos(args))
                     {
